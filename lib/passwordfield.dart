@@ -160,7 +160,7 @@ class PasswordFieldState extends State<PasswordField> {
     return Theme(
       data: ThemeData(
           primaryColor:
-              widget.color ?? Theme.of(context).primaryColor ?? Colors.red),
+              widget.color == null ? (Theme.of(context).primaryColor == null ? Colors.red : Theme.of(context).primaryColor) : widget.color),
       child: StreamBuilder<String>(
         stream: bloc.password,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
