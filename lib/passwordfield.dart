@@ -27,6 +27,7 @@ class PasswordField extends StatefulWidget {
       this.errorFocusedBorder,
       this.errorMessage,
       this.suffixIcon,
+      this.validator,
       this.pattern,
       this.suffixIconEnabled = true})
       : assert((backgroundColor == null && backgroundBorderRadius == null) ||
@@ -76,6 +77,9 @@ class PasswordField extends StatefulWidget {
    * for the specification of JavaScript regular expressions.
    */
   final String pattern;
+
+  /// Return an error message or null depedending on your password quality
+  final String Function(String) validator;
 
   /// whether the placeholder can float to left top on focus
   final bool hasFloatingPlaceholder;
@@ -168,7 +172,7 @@ class PasswordFieldState extends State<PasswordField> {
                     color: widget.backgroundColor,
                     borderRadius: widget.backgroundBorderRadius)
                 : null,
-            child: TextField(
+            child: TextFormField(
               maxLength: widget.maxLength,
               controller: widget.controller,
               obscureText: obscureText,
@@ -204,8 +208,8 @@ class PasswordFieldState extends State<PasswordField> {
                           onTapUp: outContact,
                         )
                       : null),
-              onSubmitted: widget.onSubmit,
               style: widget.inputStyle,
+              validator: widget.validator,
               onChanged: (text) =>
                   bloc.onPasswordChanged(widget.pattern ?? '.*', text),
             ),
