@@ -23,7 +23,7 @@ class PasswordField extends StatefulWidget {
       this.backgroundBorderRadius,
       this.textPadding,
       this.errorStyle,
-      @deprecated this.onChanged,
+      this.onChanged,
       this.errorFocusedBorder,
       this.errorMessage,
       this.suffixIcon,
@@ -123,9 +123,8 @@ class PasswordField extends StatefulWidget {
   /// function triggerred when the submit button on keyboard is pressed
   final Function(String)? onSubmit;
 
-  /// A Callback function triggered when the text insude the PasswordField changes
+  /// A Callback function triggered when the text inside the PasswordField changes
   ///
-  @deprecated
   final Function? onChanged;
 
   /// Icon used to unhide the password when touch in Contact with the icon
@@ -210,8 +209,11 @@ class PasswordFieldState extends State<PasswordField> {
                       : null),
               style: widget.inputStyle,
               validator: widget.validator,
-              onChanged: (text) =>
-                  bloc.onPasswordChanged(widget.pattern ?? '.*', text),
+              onChanged: (text) {
+                bloc.onPasswordChanged(widget.pattern ?? '.*', text);
+                if (widget.onChanged != null)
+                  widget.onChanged!(text);
+              },
             ),
           );
         },
